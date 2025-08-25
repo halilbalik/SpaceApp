@@ -162,7 +162,7 @@ const DatePickerComponent = ({
             </View>
           </View>
 
-          <View style={styles.quickActions}>
+                    <View style={styles.quickActions}>
             <TouchableOpacity
               style={styles.todayButton}
               onPress={handleToday}
@@ -283,6 +283,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     paddingVertical: 8,
     borderRadius: 8,
+    justifyContent: 'center',
   },
   todayButtonText: {
     color: '#1e3a8a',

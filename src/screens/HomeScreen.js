@@ -42,6 +42,11 @@ const HomeScreen = () => {
     hasTranslation,
     hasTranslationError,
     translateExplanation,
+    astrologicalComment,
+    astrologicalLoading,
+    astrologicalError,
+    hasAstrologicalComment,
+    hasAstrologicalError,
   } = useNasaAPOD();
 
   const handleDateSelect = async (dateString) => {
@@ -60,7 +65,7 @@ const HomeScreen = () => {
     await fetchAPODForDate(null); // null bugünkü tarihi getirir
   };
 
-  const formatDisplayDate = (date) => {
+      const formatDisplayDate = (date) => {
     if (!date) return 'Bugün';
     const today = new Date().toDateString();
     const selectedDateString = date.toDateString();
@@ -161,8 +166,22 @@ const HomeScreen = () => {
               isImage={isImage}
             />
 
-            {/* APOD Explanation */}
+                        {/* APOD Explanation */}
             <View style={styles.explanationContainer}>
+              {/* Original English Explanation */}
+              <View style={styles.englishExplanationContainer}>
+                <View style={styles.explanationHeader}>
+                  <Text style={styles.explanationTitle}>Açıklama (İngilizce)</Text>
+                  <View style={styles.nasaTag}>
+                    <Ionicons name="rocket-outline" size={12} color="#1e3a8a" />
+                    <Text style={styles.nasaTagText}>NASA</Text>
+                  </View>
+                </View>
+                <Text style={styles.explanationText}>
+                  {apodData.explanation}
+                </Text>
+              </View>
+
               {/* Turkish Translation */}
               {hasTranslation && (
                 <View style={styles.turkishExplanationContainer}>
@@ -217,23 +236,59 @@ const HomeScreen = () => {
                 </View>
               )}
 
-              {/* Original English Explanation */}
-              <View style={hasTranslation || translating ? styles.englishExplanationContainer : styles.originalExplanationContainer}>
-                <View style={styles.explanationHeader}>
-                  <Text style={styles.explanationTitle}>
-                    {hasTranslation || translating ? 'Orijinal Açıklama (İngilizce)' : 'Açıklama'}
-                  </Text>
-                  {(hasTranslation || translating) && (
-                    <View style={styles.nasaTag}>
-                      <Ionicons name="rocket-outline" size={12} color="#1e3a8a" />
-                      <Text style={styles.nasaTagText}>NASA</Text>
+              {/* Astrological Comment */}
+              {hasAstrologicalComment && (
+                <View style={styles.birthdayCommentContainer}>
+                  <View style={styles.explanationHeader}>
+                    <Text style={styles.explanationTitle}>Astrolojik Yorum</Text>
+                    <View style={styles.birthdayTag}>
+                      <Ionicons name="star" size={12} color="#ec4899" />
+                      <Text style={styles.birthdayTagText}>Kişilik</Text>
                     </View>
-                  )}
+                  </View>
+                  <Text style={styles.explanationText}>
+                    {astrologicalComment}
+                  </Text>
                 </View>
-                <Text style={styles.explanationText}>
-                  {apodData.explanation}
-                </Text>
-              </View>
+              )}
+
+              {/* Astrological Loading */}
+              {astrologicalLoading && (
+                <View style={styles.translatingContainer}>
+                  <View style={styles.explanationHeader}>
+                    <Text style={styles.explanationTitle}>Astrolojik Yorum</Text>
+                    <View style={styles.birthdayTag}>
+                      <Ionicons name="star" size={12} color="#ec4899" />
+                      <Text style={styles.birthdayTagText}>Kişilik</Text>
+                    </View>
+                  </View>
+                  <View style={styles.translatingContent}>
+                    <Ionicons name="time-outline" size={16} color="#6b7280" />
+                    <Text style={styles.translatingText}>Kişiliğiniz analiz ediliyor...</Text>
+                  </View>
+                </View>
+              )}
+
+              {/* Astrological Error */}
+              {hasAstrologicalError && !astrologicalLoading && (
+                <View style={styles.translationErrorContainer}>
+                  <View style={styles.explanationHeader}>
+                    <Text style={styles.explanationTitle}>Astrolojik Yorum</Text>
+                    <TouchableOpacity
+                      style={styles.retryTranslationButton}
+                      onPress={() => translateExplanation(apodData.explanation, true, selectedDate?.toISOString?.()?.split('T')[0])}
+                      activeOpacity={0.7}
+                    >
+                      <Ionicons name="refresh-outline" size={14} color="#1e3a8a" />
+                      <Text style={styles.retryTranslationText}>Tekrar Dene</Text>
+                    </TouchableOpacity>
+                  </View>
+                  <View style={styles.errorContent}>
+                    <Ionicons name="warning-outline" size={16} color="#dc2626" />
+                    <Text style={styles.translationErrorText}>{astrologicalError}</Text>
+                  </View>
+                </View>
+              )}
             </View>
 
             {/* Copyright info */}
@@ -382,7 +437,15 @@ const styles = StyleSheet.create({
     borderLeftWidth: 4,
     borderLeftColor: '#8b5cf6',
     padding: 16,
-    marginBottom: 20,
+    marginBottom: 16,
+    borderRadius: 8,
+  },
+  birthdayCommentContainer: {
+    backgroundColor: '#fdf2f8',
+    borderLeftWidth: 4,
+    borderLeftColor: '#ec4899',
+    padding: 16,
+    marginTop: 16,
     borderRadius: 8,
   },
   englishExplanationContainer: {
@@ -390,11 +453,11 @@ const styles = StyleSheet.create({
     borderLeftWidth: 4,
     borderLeftColor: '#3b82f6',
     padding: 16,
-    marginTop: 16,
+    marginBottom: 16,
     borderRadius: 8,
   },
   originalExplanationContainer: {
-    marginTop: 16,
+    marginBottom: 16,
   },
   geminiTag: {
     flexDirection: 'row',
@@ -409,6 +472,22 @@ const styles = StyleSheet.create({
   geminiTagText: {
     fontSize: 10,
     color: '#8b5cf6',
+    fontWeight: '600',
+    marginLeft: 4,
+  },
+  birthdayTag: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#fdf2f8',
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+    borderRadius: 6,
+    borderWidth: 1,
+    borderColor: '#f9a8d4',
+  },
+  birthdayTagText: {
+    fontSize: 10,
+    color: '#ec4899',
     fontWeight: '600',
     marginLeft: 4,
   },

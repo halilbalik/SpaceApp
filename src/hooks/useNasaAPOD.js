@@ -10,25 +10,54 @@ export const useNasaAPOD = (initialDate = null) => {
   const [turkishExplanation, setTurkishExplanation] = useState(null);
   const [translating, setTranslating] = useState(false);
   const [translationError, setTranslationError] = useState(null);
+  const [astrologicalComment, setAstrologicalComment] = useState(null);
+  const [astrologicalLoading, setAstrologicalLoading] = useState(false);
+  const [astrologicalError, setAstrologicalError] = useState(null);
 
-  const translateExplanation = useCallback(async (explanation) => {
+  const translateExplanation = useCallback(async (explanation, isAstrological = false, date = null) => {
     try {
-      setTranslating(true);
-      setTranslationError(null);
+      if (isAstrological) {
+        setAstrologicalLoading(true);
+        setAstrologicalError(null);
+      } else {
+        setTranslating(true);
+        setTranslationError(null);
+      }
 
-      const result = await geminiService.translateToTurkish(explanation);
+      let result;
+      if (isAstrological) {
+        result = await geminiService.createBirthdayComment(explanation, date);
+      } else {
+        result = await geminiService.translateToTurkish(explanation);
+      }
 
       if (result.success) {
-        setTurkishExplanation(result.data);
+        if (isAstrological) {
+          setAstrologicalComment(result.data);
+        } else {
+          setTurkishExplanation(result.data);
+        }
       } else {
-        setTranslationError(result.error);
+        if (isAstrological) {
+          setAstrologicalError(result.error);
+        } else {
+          setTranslationError(result.error);
+        }
       }
 
     } catch (err) {
       console.error('Translation Error:', err);
-      setTranslationError('Çeviri sırasında bir hata oluştu');
+      if (isAstrological) {
+        setAstrologicalError('Astrolojik yorum sırasında bir hata oluştu');
+      } else {
+        setTranslationError('Çeviri sırasında bir hata oluştu');
+      }
     } finally {
-      setTranslating(false);
+      if (isAstrological) {
+        setAstrologicalLoading(false);
+      } else {
+        setTranslating(false);
+      }
     }
   }, []);
 
@@ -38,14 +67,20 @@ export const useNasaAPOD = (initialDate = null) => {
       setError(null);
       setTurkishExplanation(null);
       setTranslationError(null);
+      setAstrologicalComment(null);
+      setAstrologicalError(null);
 
       const result = await nasaService.getAPOD(date);
 
       if (result.success) {
         setApodData(result.data);
-        // APOD verisi yüklendikten sonra otomatik çeviri başlat
+        // APOD verisi yüklendikten sonra hem çeviri hem astrolojik yorum başlat
         if (result.data?.explanation) {
-          translateExplanation(result.data.explanation);
+          // Çeviri
+          translateExplanation(result.data.explanation, false);
+          // Astrolojik yorum - date null ise bugünün tarihini kullan
+          const astroDate = date || new Date().toISOString().split('T')[0];
+          translateExplanation(result.data.explanation, true, astroDate);
         }
       } else {
         setError(result.error);
@@ -89,11 +124,16 @@ export const useNasaAPOD = (initialDate = null) => {
     turkishExplanation,
     translating,
     translationError,
+    astrologicalComment,
+    astrologicalLoading,
+    astrologicalError,
     hasData: !!apodData,
     hasError: !!error,
     isImage: apodData?.mediaType === 'image',
     isVideo: apodData?.mediaType === 'video',
     hasTranslation: !!turkishExplanation,
     hasTranslationError: !!translationError,
+    hasAstrologicalComment: !!astrologicalComment,
+    hasAstrologicalError: !!astrologicalError,
   };
 };
