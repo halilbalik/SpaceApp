@@ -36,6 +36,12 @@ const HomeScreen = () => {
     hasError,
     isImage,
     fetchAPODForDate,
+    turkishExplanation,
+    translating,
+    translationError,
+    hasTranslation,
+    hasTranslationError,
+    translateExplanation,
   } = useNasaAPOD();
 
   const handleDateSelect = async (dateString) => {
@@ -157,10 +163,77 @@ const HomeScreen = () => {
 
             {/* APOD Explanation */}
             <View style={styles.explanationContainer}>
-              <Text style={styles.explanationTitle}>Açıklama</Text>
-              <Text style={styles.explanationText}>
-                {apodData.explanation}
-              </Text>
+              {/* Turkish Translation */}
+              {hasTranslation && (
+                <View style={styles.turkishExplanationContainer}>
+                  <View style={styles.explanationHeader}>
+                    <Text style={styles.explanationTitle}>Türkçe Açıklama</Text>
+                    <View style={styles.geminiTag}>
+                      <Ionicons name="sparkles" size={12} color="#8b5cf6" />
+                      <Text style={styles.geminiTagText}>Gemini AI</Text>
+                    </View>
+                  </View>
+                  <Text style={styles.explanationText}>
+                    {turkishExplanation}
+                  </Text>
+                </View>
+              )}
+
+              {/* Translation Loading */}
+              {translating && (
+                <View style={styles.translatingContainer}>
+                  <View style={styles.explanationHeader}>
+                    <Text style={styles.explanationTitle}>Türkçe Açıklama</Text>
+                    <View style={styles.geminiTag}>
+                      <Ionicons name="sparkles" size={12} color="#8b5cf6" />
+                      <Text style={styles.geminiTagText}>Gemini AI</Text>
+                    </View>
+                  </View>
+                  <View style={styles.translatingContent}>
+                    <Ionicons name="time-outline" size={16} color="#6b7280" />
+                    <Text style={styles.translatingText}>Çeviri yapılıyor...</Text>
+                  </View>
+                </View>
+              )}
+
+              {/* Translation Error */}
+              {hasTranslationError && !translating && (
+                <View style={styles.translationErrorContainer}>
+                  <View style={styles.explanationHeader}>
+                    <Text style={styles.explanationTitle}>Türkçe Açıklama</Text>
+                    <TouchableOpacity
+                      style={styles.retryTranslationButton}
+                      onPress={() => translateExplanation(apodData.explanation)}
+                      activeOpacity={0.7}
+                    >
+                      <Ionicons name="refresh-outline" size={14} color="#1e3a8a" />
+                      <Text style={styles.retryTranslationText}>Tekrar Dene</Text>
+                    </TouchableOpacity>
+                  </View>
+                  <View style={styles.errorContent}>
+                    <Ionicons name="warning-outline" size={16} color="#dc2626" />
+                    <Text style={styles.translationErrorText}>{translationError}</Text>
+                  </View>
+                </View>
+              )}
+
+              {/* Original English Explanation */}
+              <View style={hasTranslation || translating ? styles.englishExplanationContainer : styles.originalExplanationContainer}>
+                <View style={styles.explanationHeader}>
+                  <Text style={styles.explanationTitle}>
+                    {hasTranslation || translating ? 'Orijinal Açıklama (İngilizce)' : 'Açıklama'}
+                  </Text>
+                  {(hasTranslation || translating) && (
+                    <View style={styles.nasaTag}>
+                      <Ionicons name="rocket-outline" size={12} color="#1e3a8a" />
+                      <Text style={styles.nasaTagText}>NASA</Text>
+                    </View>
+                  )}
+                </View>
+                <Text style={styles.explanationText}>
+                  {apodData.explanation}
+                </Text>
+              </View>
             </View>
 
             {/* Copyright info */}
@@ -287,17 +360,125 @@ const styles = StyleSheet.create({
   explanationContainer: {
     marginBottom: 24,
   },
+  explanationHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 12,
+  },
   explanationTitle: {
     fontSize: 20,
     fontWeight: 'bold',
     color: '#1f2937',
-    marginBottom: 12,
   },
   explanationText: {
     fontSize: 16,
     color: '#4b5563',
     lineHeight: 24,
     textAlign: 'justify',
+  },
+  turkishExplanationContainer: {
+    backgroundColor: '#f8fafc',
+    borderLeftWidth: 4,
+    borderLeftColor: '#8b5cf6',
+    padding: 16,
+    marginBottom: 20,
+    borderRadius: 8,
+  },
+  englishExplanationContainer: {
+    backgroundColor: '#f0f9ff',
+    borderLeftWidth: 4,
+    borderLeftColor: '#3b82f6',
+    padding: 16,
+    marginTop: 16,
+    borderRadius: 8,
+  },
+  originalExplanationContainer: {
+    marginTop: 16,
+  },
+  geminiTag: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#f3f0ff',
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+    borderRadius: 6,
+    borderWidth: 1,
+    borderColor: '#e5d3ff',
+  },
+  geminiTagText: {
+    fontSize: 10,
+    color: '#8b5cf6',
+    fontWeight: '600',
+    marginLeft: 4,
+  },
+  nasaTag: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#eff6ff',
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+    borderRadius: 6,
+    borderWidth: 1,
+    borderColor: '#bfdbfe',
+  },
+  nasaTagText: {
+    fontSize: 10,
+    color: '#1e3a8a',
+    fontWeight: '600',
+    marginLeft: 4,
+  },
+  translatingContainer: {
+    backgroundColor: '#fffbeb',
+    borderLeftWidth: 4,
+    borderLeftColor: '#f59e0b',
+    padding: 16,
+    marginBottom: 20,
+    borderRadius: 8,
+  },
+  translatingContent: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  translatingText: {
+    fontSize: 14,
+    color: '#92400e',
+    fontStyle: 'italic',
+    marginLeft: 8,
+  },
+  translationErrorContainer: {
+    backgroundColor: '#fef2f2',
+    borderLeftWidth: 4,
+    borderLeftColor: '#dc2626',
+    padding: 16,
+    marginBottom: 20,
+    borderRadius: 8,
+  },
+  errorContent: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  translationErrorText: {
+    fontSize: 14,
+    color: '#dc2626',
+    marginLeft: 8,
+    flex: 1,
+  },
+  retryTranslationButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#eff6ff',
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+    borderRadius: 6,
+    borderWidth: 1,
+    borderColor: '#bfdbfe',
+  },
+  retryTranslationText: {
+    fontSize: 10,
+    color: '#1e3a8a',
+    fontWeight: '600',
+    marginLeft: 4,
   },
   copyrightContainer: {
     flexDirection: 'row',

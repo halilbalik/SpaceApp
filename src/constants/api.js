@@ -3,6 +3,8 @@ import settings from '../../appsettings.json';
 export const API_CONFIG = {
   NASA_API_KEY: settings.NASA_API_KEY,
   NASA_API_BASE_URL: settings.NASA_API_BASE_URL,
+  GEMINI_API_KEY: settings.GEMINI_API_KEY,
+  GEMINI_API_BASE_URL: settings.GEMINI_API_BASE_URL,
 
   TIMEOUT: 10000,
   HEADERS: {
