@@ -1,6 +1,6 @@
 # 🌌 SpaceApp - NASA APOD Keşif Uygulaması
 
-NASA'nın Günlük Astronomi Resimlerini AI destekli Türkçe çeviriler ve kişiselleştirilmiş astrolojik yorumlarla sunan güzel bir React Native uygulaması.
+NASA'nın Günlük Astronomi Resimlerini AI destekli Türkçe çeviriler ve kişiselleştirilmiş astrolojik yorumlarla sunan React Native uygulaması.
 
 ## ✨ Özellikler
 
@@ -48,13 +48,13 @@ NASA'nın Günlük Astronomi Resimlerini AI destekli Türkçe çeviriler ve kiş
   </tr>
 </table>
 
-## 🛠️ Teknoloji Yığını
+## 🛠️ Teknolojiler
 
 - **Frontend**: React Native, Expo
 - **API'ler**:
   - NASA APOD API
   - Google Gemini AI API
-- **Özellikler**: Tarih navigasyonu, AI çevirileri, Burç analizi
+- **Özellikler**: Tarih navigasyonu, AI çevirileri, Astrolojik yorumlar
 
 ## 🚀 Başlangıç
 
