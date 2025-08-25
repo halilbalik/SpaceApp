@@ -1,5 +1,5 @@
 // Home Screen - Presentation Layer
-import React from 'react';
+import React, { useState } from 'react';
 import {
   StyleSheet,
   Text,
@@ -7,6 +7,7 @@ import {
   ScrollView,
   RefreshControl,
   Dimensions,
+  TouchableOpacity,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
@@ -17,10 +18,14 @@ import LoadingComponent from '../components/LoadingComponent';
 import ErrorComponent from '../components/ErrorComponent';
 import APODImageComponent from '../components/APODImageComponent';
 import APODInfoComponent from '../components/APODInfoComponent';
+import DatePickerComponent from '../components/DatePickerComponent';
 
 const { width } = Dimensions.get('window');
 
 const HomeScreen = () => {
+  const [isDatePickerVisible, setIsDatePickerVisible] = useState(false);
+  const [selectedDate, setSelectedDate] = useState(new Date());
+
   const {
     apodData,
     loading,
@@ -30,7 +35,40 @@ const HomeScreen = () => {
     hasData,
     hasError,
     isImage,
+    fetchAPODForDate,
   } = useNasaAPOD();
+
+  const handleDateSelect = async (dateString) => {
+    try {
+      await fetchAPODForDate(dateString);
+      setSelectedDate(new Date(dateString));
+    } catch (error) {
+      console.error('Tarih seçimi hatası:', error);
+    }
+  };
+
+  const handleTodayPress = async () => {
+    const today = new Date();
+    const todayString = today.toISOString().split('T')[0];
+    setSelectedDate(today);
+    await fetchAPODForDate(null); // null bugünkü tarihi getirir
+  };
+
+  const formatDisplayDate = (date) => {
+    if (!date) return 'Bugün';
+    const today = new Date().toDateString();
+    const selectedDateString = date.toDateString();
+
+    if (today === selectedDateString) {
+      return 'Bugün';
+    }
+
+    return date.toLocaleDateString('tr-TR', {
+      day: 'numeric',
+      month: 'long',
+      year: 'numeric'
+    });
+  };
 
   // Loading state
   if (loading && !refreshing) {
@@ -62,13 +100,39 @@ const HomeScreen = () => {
           />
         }
       >
-        {/* Header */}
+                {/* Header */}
         <View style={styles.header}>
           <View style={styles.headerContent}>
             <Ionicons name="telescope-outline" size={32} color="#1e3a8a" />
-            <Text style={styles.headerTitle}>NASA APOD</Text>
+            <View style={styles.headerTextContainer}>
+              <Text style={styles.headerTitle}>NASA APOD</Text>
+              <Text style={styles.headerSubtitle}>Astronomy Picture of the Day</Text>
+            </View>
           </View>
-          <Text style={styles.headerSubtitle}>Astronomy Picture of the Day</Text>
+        </View>
+
+        {/* Compact Date Selector */}
+        <View style={styles.dateSelector}>
+          <TouchableOpacity
+            style={styles.dateButton}
+            onPress={() => setIsDatePickerVisible(true)}
+            activeOpacity={0.7}
+          >
+            <Ionicons name="calendar-outline" size={18} color="#1e3a8a" />
+            <Text style={styles.dateButtonText}>
+              {formatDisplayDate(selectedDate)}
+            </Text>
+            <Ionicons name="chevron-down-outline" size={14} color="#6b7280" />
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            style={styles.todayButton}
+            onPress={handleTodayPress}
+            activeOpacity={0.7}
+          >
+            <Ionicons name="today-outline" size={16} color="#1e3a8a" />
+            <Text style={styles.todayButtonText}>Bugün</Text>
+          </TouchableOpacity>
         </View>
 
         {/* Error banner (if error but we have cached data) */}
@@ -111,6 +175,14 @@ const HomeScreen = () => {
           </View>
         )}
       </ScrollView>
+
+      {/* Date Picker Modal */}
+      <DatePickerComponent
+        isVisible={isDatePickerVisible}
+        onClose={() => setIsDatePickerVisible(false)}
+        onDateSelect={handleDateSelect}
+        selectedDate={selectedDate}
+      />
     </SafeAreaView>
   );
 };
@@ -133,18 +205,65 @@ const styles = StyleSheet.create({
   headerContent: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 8,
+  },
+  headerTextContainer: {
+    flex: 1,
+    marginLeft: 12,
   },
   headerTitle: {
     fontSize: 28,
     fontWeight: 'bold',
     color: '#1f2937',
-    marginLeft: 12,
   },
   headerSubtitle: {
     fontSize: 16,
     color: '#6b7280',
-    marginLeft: 44,
+    marginTop: 2,
+  },
+  dateSelector: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#ffffff',
+    paddingHorizontal: 20,
+    paddingVertical: 12,
+    borderBottomWidth: 1,
+    borderBottomColor: '#f3f4f6',
+  },
+  dateButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#f8fafc',
+    borderWidth: 1,
+    borderColor: '#e5e7eb',
+    borderRadius: 6,
+    paddingHorizontal: 10,
+    paddingVertical: 6,
+    flex: 1,
+    marginRight: 8,
+  },
+  dateButtonText: {
+    fontSize: 13,
+    color: '#1f2937',
+    fontWeight: '500',
+    marginLeft: 4,
+    marginRight: 4,
+    flex: 1,
+  },
+  todayButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#eff6ff',
+    borderWidth: 1,
+    borderColor: '#bfdbfe',
+    borderRadius: 6,
+    paddingHorizontal: 8,
+    paddingVertical: 6,
+  },
+  todayButtonText: {
+    fontSize: 11,
+    color: '#1e3a8a',
+    fontWeight: '600',
+    marginLeft: 4,
   },
   errorBanner: {
     backgroundColor: '#fef2f2',
