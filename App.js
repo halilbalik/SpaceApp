@@ -1,9 +1,7 @@
-// Main App Component - Entry Point
 import React from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 
-// Screens
 import HomeScreen from './src/screens/HomeScreen';
 
 export default function App() {

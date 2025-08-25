@@ -1,13 +1,6 @@
-// NASA API Service - Data Layer
 import { API_CONFIG, getFullApiUrl } from '../constants/api';
 
 class NasaService {
-
-  /**
-   * Fetch Astronomy Picture of the Day
-   * @param {string} date - Optional date in YYYY-MM-DD format
-   * @returns {Promise<Object>} APOD data
-   */
   async getAPOD(date = null) {
     try {
       const url = getFullApiUrl(date);
@@ -56,11 +49,6 @@ class NasaService {
     }
   }
 
-  /**
-   * Transform raw APOD data to our app format
-   * @param {Object} rawData - Raw data from NASA API
-   * @returns {Object} Transformed data
-   */
   transformAPODData(rawData) {
     return {
       title: rawData.title || 'Başlık bulunamadı',
@@ -74,11 +62,6 @@ class NasaService {
     };
   }
 
-  /**
-   * Get APOD data for multiple dates
-   * @param {Array<string>} dates - Array of dates in YYYY-MM-DD format
-   * @returns {Promise<Array>} Array of APOD data
-   */
   async getMultipleAPOD(dates) {
     try {
       const promises = dates.map(date => this.getAPOD(date));
@@ -96,5 +79,4 @@ class NasaService {
   }
 }
 
-// Export singleton instance
 export default new NasaService();

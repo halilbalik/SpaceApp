@@ -1,4 +1,3 @@
-// Custom Hook for NASA APOD - Business Logic Layer
 import { useState, useEffect, useCallback } from 'react';
 import nasaService from '../services/nasaService';
 
@@ -8,10 +7,6 @@ export const useNasaAPOD = (initialDate = null) => {
   const [error, setError] = useState(null);
   const [refreshing, setRefreshing] = useState(false);
 
-  /**
-   * Fetch APOD data
-   * @param {string} date - Optional date in YYYY-MM-DD format
-   */
   const fetchAPOD = useCallback(async (date = initialDate) => {
     try {
       setLoading(true);
@@ -34,48 +29,31 @@ export const useNasaAPOD = (initialDate = null) => {
     }
   }, [initialDate]);
 
-  /**
-   * Refresh data with pull-to-refresh
-   */
   const refreshAPOD = useCallback(async () => {
     setRefreshing(true);
     await fetchAPOD();
   }, [fetchAPOD]);
 
-  /**
-   * Fetch APOD for specific date
-   * @param {string} date - Date in YYYY-MM-DD format
-   */
   const fetchAPODForDate = useCallback(async (date) => {
     await fetchAPOD(date);
   }, [fetchAPOD]);
 
-  /**
-   * Get today's APOD
-   */
   const fetchTodaysAPOD = useCallback(async () => {
     await fetchAPOD(null);
   }, [fetchAPOD]);
 
-  // Initial data fetch
   useEffect(() => {
     fetchAPOD();
   }, [fetchAPOD]);
 
-  // Return hook interface
   return {
-    // State
     apodData,
     loading,
     error,
     refreshing,
-
-    // Actions
     refreshAPOD,
     fetchAPODForDate,
     fetchTodaysAPOD,
-
-    // Computed values
     hasData: !!apodData,
     hasError: !!error,
     isImage: apodData?.mediaType === 'image',
