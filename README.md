@@ -25,25 +25,25 @@ NASA'nın Günlük Astronomi Resimlerini AI destekli Türkçe çeviriler ve kiş
     <td align="center">
       <img src="screenshots/1.png" width="250" alt="İngilizce ve Türkçe Açıklamalar">
       <br>
-      <b>Çok Dilli Destek</b>
+      <b>Ana Arayüz</b>
       <br>
-      <em>Orijinal İngilizce açıklamalar ve AI destekli Türkçe çeviriler</em>
+      <em>Kapsamlı bilgilerle birlikte güzel astronomi fotoğrafı</em>
     </td>
   </tr>
   <tr>
     <td align="center">
       <img src="screenshots/2.png" width="250" alt="Astrolojik Yorum">
       <br>
-      <b>Astrolojik İçgörüler</b>
+      <b>Çok Dilli Destek</b>
       <br>
-      <em>Seçilen tarihe dayalı kişiselleştirilmiş astrolojik analiz</em>
+      <em>Orijinal İngilizce açıklamalar ve AI destekli Türkçe çeviriler</em>
     </td>
     <td align="center">
       <img src="screenshots/3.png" width="250" alt="Ana Uygulama Ekranı">
       <br>
-      <b>Ana Arayüz</b>
+      <b>Astrolojik İçgörüler</b>
       <br>
-      <em>Kapsamlı bilgilerle birlikte güzel astronomi resimleri</em>
+      <em>Seçilen tarihe dayalı kişiselleştirilmiş astrolojik analiz</em>
     </td>
   </tr>
 </table>
@@ -55,7 +55,6 @@ NASA'nın Günlük Astronomi Resimlerini AI destekli Türkçe çeviriler ve kiş
   - NASA APOD API
   - Google Gemini AI API
 - **Özellikler**: Tarih navigasyonu, AI çevirileri, Burç analizi
-- **Arayüz**: Modern tasarımlı özel bileşenler
 
 ## 🚀 Başlangıç
 

@@ -1,4 +1,3 @@
-// APOD Image Component - Reusable UI Component
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { Image } from 'expo-image';
@@ -19,7 +18,6 @@ const APODImageComponent = ({ apodData, isImage }) => {
     );
   }
 
-  // Video or unsupported media type
   return (
     <View style={styles.videoContainer}>
       <Ionicons name="play-circle-outline" size={64} color="#1e3a8a" />

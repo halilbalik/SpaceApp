@@ -18,7 +18,7 @@ const DatePickerComponent = ({
   onDateSelect,
   selectedDate = new Date(),
   maxDate = new Date(),
-  minDate = new Date('1995-06-16') // NASA APOD başlangıç tarihi
+  minDate = new Date('1995-06-16')
 }) => {
   const [tempDate, setTempDate] = useState(selectedDate);
 
@@ -99,7 +99,6 @@ const DatePickerComponent = ({
           </View>
 
           <View style={styles.controlsContainer}>
-            {/* Yıl Kontrolü */}
             <View style={styles.controlRow}>
               <Text style={styles.controlLabel}>Yıl</Text>
               <View style={styles.controlButtons}>
@@ -119,7 +118,6 @@ const DatePickerComponent = ({
               </View>
             </View>
 
-            {/* Ay Kontrolü */}
             <View style={styles.controlRow}>
               <Text style={styles.controlLabel}>Ay</Text>
               <View style={styles.controlButtons}>
@@ -141,7 +139,6 @@ const DatePickerComponent = ({
               </View>
             </View>
 
-            {/* Gün Kontrolü */}
             <View style={styles.controlRow}>
               <Text style={styles.controlLabel}>Gün</Text>
               <View style={styles.controlButtons}>

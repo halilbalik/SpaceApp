@@ -11,7 +11,6 @@ class GeminiService {
         };
       }
 
-      // Tarih formatını düzenle - güvenli parsing
       const birthDateObj = birthDate ? new Date(birthDate) : new Date();
       const formattedDate = birthDateObj.toLocaleDateString('tr-TR', {
         day: 'numeric',
@@ -19,7 +18,6 @@ class GeminiService {
         year: 'numeric'
       });
 
-      // Burç hesaplama
       const month = birthDateObj.getMonth() + 1;
       const day = birthDateObj.getDate();
 
@@ -91,7 +89,7 @@ Kişiliğe odaklı astrolojik yorum yaz:
       };
 
       const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), API_CONFIG.TIMEOUT * 3); // Daha uzun timeout
+      const timeoutId = setTimeout(() => controller.abort(), API_CONFIG.TIMEOUT * 3);
 
       const response = await fetch(API_CONFIG.GEMINI_API_BASE_URL, {
         method: 'POST',
@@ -195,7 +193,7 @@ ${englishText}`;
       };
 
       const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), API_CONFIG.TIMEOUT * 2); // Çeviri için daha uzun timeout
+      const timeoutId = setTimeout(() => controller.abort(), API_CONFIG.TIMEOUT * 2);
 
       const response = await fetch(API_CONFIG.GEMINI_API_BASE_URL, {
         method: 'POST',

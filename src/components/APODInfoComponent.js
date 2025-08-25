@@ -1,4 +1,3 @@
-// APOD Info Component - Reusable UI Component
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
@@ -8,13 +7,11 @@ const APODInfoComponent = ({ apodData }) => {
 
   return (
     <View style={styles.container}>
-      {/* Date */}
       <View style={styles.dateContainer}>
         <Ionicons name="calendar-outline" size={20} color="#6b7280" />
         <Text style={styles.dateText}>{apodData.date}</Text>
       </View>
 
-      {/* Title */}
       <Text style={styles.title}>{apodData.title}</Text>
     </View>
   );

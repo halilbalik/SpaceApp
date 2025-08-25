@@ -1,4 +1,3 @@
-// Home Screen - Presentation Layer
 import React, { useState } from 'react';
 import {
   StyleSheet,
@@ -12,7 +11,6 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 
-// Custom hooks and components
 import { useNasaAPOD } from '../hooks/useNasaAPOD';
 import LoadingComponent from '../components/LoadingComponent';
 import ErrorComponent from '../components/ErrorComponent';
@@ -62,7 +60,7 @@ const HomeScreen = () => {
     const today = new Date();
     const todayString = today.toISOString().split('T')[0];
     setSelectedDate(today);
-    await fetchAPODForDate(null); // null bugünkü tarihi getirir
+    await fetchAPODForDate(null);
   };
 
       const formatDisplayDate = (date) => {
@@ -81,12 +79,10 @@ const HomeScreen = () => {
     });
   };
 
-  // Loading state
   if (loading && !refreshing) {
     return <LoadingComponent />;
   }
 
-  // Error state
   if (hasError && !hasData) {
     return (
       <ErrorComponent
@@ -96,7 +92,6 @@ const HomeScreen = () => {
     );
   }
 
-  // Success state with data
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView
@@ -109,9 +104,8 @@ const HomeScreen = () => {
             colors={['#1e3a8a']}
             tintColor="#1e3a8a"
           />
-        }
+                }
       >
-                {/* Header */}
         <View style={styles.header}>
           <View style={styles.headerContent}>
             <Ionicons name="telescope-outline" size={32} color="#1e3a8a" />
@@ -122,7 +116,6 @@ const HomeScreen = () => {
           </View>
         </View>
 
-        {/* Compact Date Selector */}
         <View style={styles.dateSelector}>
           <TouchableOpacity
             style={styles.dateButton}
@@ -146,7 +139,6 @@ const HomeScreen = () => {
           </TouchableOpacity>
         </View>
 
-        {/* Error banner (if error but we have cached data) */}
         {hasError && hasData && (
           <View style={styles.errorBanner}>
             <Ionicons name="warning-outline" size={20} color="#dc2626" />
@@ -154,21 +146,16 @@ const HomeScreen = () => {
           </View>
         )}
 
-        {/* APOD Content */}
         {hasData && (
           <View style={styles.content}>
-            {/* APOD Info (Date, Title) */}
-            <APODInfoComponent apodData={apodData} />
+            <APODInfoComponent apodData={apodData}             />
 
-            {/* APOD Media (Image/Video) */}
             <APODImageComponent
               apodData={apodData}
               isImage={isImage}
             />
 
-                        {/* APOD Explanation */}
             <View style={styles.explanationContainer}>
-              {/* Original English Explanation */}
               <View style={styles.englishExplanationContainer}>
                 <View style={styles.explanationHeader}>
                   <Text style={styles.explanationTitle}>Açıklama (İngilizce)</Text>
@@ -182,7 +169,6 @@ const HomeScreen = () => {
                 </Text>
               </View>
 
-              {/* Turkish Translation */}
               {hasTranslation && (
                 <View style={styles.turkishExplanationContainer}>
                   <View style={styles.explanationHeader}>
@@ -198,7 +184,6 @@ const HomeScreen = () => {
                 </View>
               )}
 
-              {/* Translation Loading */}
               {translating && (
                 <View style={styles.translatingContainer}>
                   <View style={styles.explanationHeader}>
@@ -215,7 +200,6 @@ const HomeScreen = () => {
                 </View>
               )}
 
-              {/* Translation Error */}
               {hasTranslationError && !translating && (
                 <View style={styles.translationErrorContainer}>
                   <View style={styles.explanationHeader}>
@@ -236,7 +220,6 @@ const HomeScreen = () => {
                 </View>
               )}
 
-              {/* Astrological Comment */}
               {hasAstrologicalComment && (
                 <View style={styles.birthdayCommentContainer}>
                   <View style={styles.explanationHeader}>
@@ -252,7 +235,6 @@ const HomeScreen = () => {
                 </View>
               )}
 
-              {/* Astrological Loading */}
               {astrologicalLoading && (
                 <View style={styles.translatingContainer}>
                   <View style={styles.explanationHeader}>
@@ -269,7 +251,6 @@ const HomeScreen = () => {
                 </View>
               )}
 
-              {/* Astrological Error */}
               {hasAstrologicalError && !astrologicalLoading && (
                 <View style={styles.translationErrorContainer}>
                   <View style={styles.explanationHeader}>
@@ -291,7 +272,6 @@ const HomeScreen = () => {
               )}
             </View>
 
-            {/* Copyright info */}
             {apodData.copyright && (
               <View style={styles.copyrightContainer}>
                 <Ionicons name="camera-outline" size={16} color="#9ca3af" />
@@ -302,9 +282,8 @@ const HomeScreen = () => {
             )}
           </View>
         )}
-      </ScrollView>
+            </ScrollView>
 
-      {/* Date Picker Modal */}
       <DatePickerComponent
         isVisible={isDatePickerVisible}
         onClose={() => setIsDatePickerVisible(false)}

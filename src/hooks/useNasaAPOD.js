@@ -74,11 +74,8 @@ export const useNasaAPOD = (initialDate = null) => {
 
       if (result.success) {
         setApodData(result.data);
-        // APOD verisi yüklendikten sonra hem çeviri hem astrolojik yorum başlat
         if (result.data?.explanation) {
-          // Çeviri
           translateExplanation(result.data.explanation, false);
-          // Astrolojik yorum - date null ise bugünün tarihini kullan
           const astroDate = date || new Date().toISOString().split('T')[0];
           translateExplanation(result.data.explanation, true, astroDate);
         }
