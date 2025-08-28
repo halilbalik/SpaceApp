@@ -2,16 +2,16 @@
 
 NASA'nın Günlük Astronomi Resimlerini AI destekli Türkçe çeviriler ve kişiselleştirilmiş astrolojik yorumlarla sunan React Native uygulaması.
 
-## ✨ Özellikler
+## Özellikler
 
-- 📅 **Tarih Seçici**: 1995'ten beri tüm NASA APOD arşivini gezin
-- 🚀 **NASA APOD Entegrasyonu**: Yüksek kaliteli astronomi resimleri ve açıklamaları
-- 🤖 **AI Destekli Çeviriler**: Gemini AI ile otomatik Türkçe çeviri
-- ⭐ **Astrolojik İçgörüler**: Burç tabanlı kişiselleştirilmiş kişilik analizi
-- 🎨 **Modern Arayüz**: Temiz, renkli tasarım ve sezgisel navigasyon
-- 📱 **Çapraz Platform**: React Native ve Expo ile geliştirildi
+-  **Tarih Seçici**: 1995'ten beri tüm NASA APOD arşivini gezin
+-  **NASA APOD Entegrasyonu**: Yüksek kaliteli astronomi resimleri ve açıklamaları
+-  **AI Destekli Çeviriler**: Gemini AI ile otomatik Türkçe çeviri
+-  **Astrolojik İçgörüler**: Burç tabanlı kişiselleştirilmiş kişilik analizi
+-  **Modern Arayüz**: Temiz, renkli tasarım ve sezgisel navigasyon
+-  **Çapraz Platform**: React Native ve Expo ile geliştirildi
 
-## 📱 Ekran Görüntüleri
+##  Ekran Görüntüleri
 
 <table>
   <tr>
@@ -48,7 +48,7 @@ NASA'nın Günlük Astronomi Resimlerini AI destekli Türkçe çeviriler ve kiş
   </tr>
 </table>
 
-## 🛠️ Teknolojiler
+##  Teknolojiler
 
 - **Frontend**: React Native, Expo
 - **API'ler**:
@@ -56,7 +56,7 @@ NASA'nın Günlük Astronomi Resimlerini AI destekli Türkçe çeviriler ve kiş
   - Google Gemini AI API
 - **Özellikler**: Tarih navigasyonu, AI çevirileri, Astrolojik yorumlar
 
-## 🚀 Başlangıç
+##  Başlangıç
 
 ### Gereksinimler
 
@@ -103,7 +103,7 @@ cp appsettings.example.json appsettings.json
 npm start
 ```
 
-## 🔑 API Anahtarları
+##  API Anahtarları
 
 ### NASA API Anahtarı
 
@@ -113,21 +113,7 @@ npm start
 
 API anahtarınızı [Google AI Studio](https://makersuite.google.com/app/apikey) adresinden alın
 
-## 🌟 Detaylı Özellikler
-
-### 📅 Tarih Navigasyonu
-
-- 1995'e kadar uzanan NASA APOD arşivinde gezinme
-- Yıl, ay, gün kontrolleriyle sezgisel tarih seçici
-- Güncel tarih için hızlı "Bugün" butonu
-
-### 🤖 AI Destekli İçerik
-
-- **Türkçe Çeviriler**: Gemini AI kullanarak NASA açıklamalarının otomatik çevirisi
-- **Astrolojik Analiz**: Burç işaretleri ve göksel olaylar temelli kişiselleştirilmiş içgörüler
-- **Akıllı İçerik**: Astronomi ile kişilik özelliklerini bağlayan bağlam farkındalıklı yorumlar
-
-### 🎨 Kullanıcı Deneyimi
+### Kullanıcı Deneyimi
 
 - **Renkle Kodlanmış Bölümler**:
   - 🔵 Orijinal NASA içeriği için mavi
